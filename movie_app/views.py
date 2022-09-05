@@ -39,7 +39,6 @@ class MovieDeleteApi(generics.DestroyAPIView):
 
 class SendExelView(APIView):
     def post(self,request,format=None):
-        import pdb;pdb.set_trace()
         excel_file = request.FILES['movie_data']
         excel_file = request.FILES["movie_data"]
         filename = fs.save(excel_file.name,excel_file) 
@@ -67,3 +66,5 @@ class SendExelView(APIView):
                 
             )
         return Response('File Uploaded Succesfully',status=status.HTTP_201_CREATED)
+
+        
