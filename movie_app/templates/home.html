@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Rolling Stone Top 500 albums of all time</title>
+    <meta name="description" content="Rolling Stone magazine's 2012 list of 500 greatest albums of all time with genres.">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.css">
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+
+    <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+  </head>
+  <body>
+
+    
+
+
+    <!-- <script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.0.7/daterangepicker.js"></script>
+    <!-- <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script> -->
+    <!-- <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script> --> -->
+   <div class="container">
+    <div class="py-5 text-center bg-secondary text-white">
+     <h1 class="mb-3">Upload File</h1>
+        <form method='POST' action="/" enctype="multipart/form-data">
+            {% for msg in messages %}
+                {{msg}}
+            {% endfor %}
+            {% csrf_token %}
+            <input type="file" class="file_type" name="myfile" > 
+            <input type="submit" class="btn btn-primary" value="submit">
+        </form>
+    </div>
+   </div>
+   <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <table id='table_id' class="tables table-striped table-bordered album" style="width:100%" data-server-side="true">
+          <thead>
+            <tr>
+              <th data-data="name">Name</th>
+              <th data-data="actor">Actor</th>
+              <th data-data="release_date">Release date</th>
+              <th data-data="poster_image">Poster picture</th>
+              <th data-data="genres">genres</th>
+
+            </tr>
+          </thead>
+          <tbody>
+`            
+            {% for movie in movies %} 
+            <tr>
+                <td>{{ movie.name }}</td>
+            
+                <td>{{ movie.actor }}</td>
+          
+                <td>{{ movie.release_date }}</td>
+            
+                <td>{{ movie.poster_image }}</td>
+            
+                <td>{{ movie.genres }}</td>
+            <tr>
+            {% endfor %}
+        </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <!-- <script>
+    'columns': [
+        {'data': 'artist.name', 'name': 'artist.name, artist__year'}
+    ]
+</script> -->
+  <script>
+      $(document).ready(function() {
+          $('#table_id').DataTable({
+        "processing": true, //Optional, only useful for *large* tables
+        //"serverSide": true, //REMOVE THIS
+    });
+          // 'serverSide': true,
+          // 'ajax': '/json/',
+          // 'columns': [
+          //         {'data': 'name'},
+          //         {'data': 'actor'},
+          //         {'data': 'release_date'},
+          //         {'data': 'poster_image'},
+          //         {'data': 'genres'},
+          //     ]
+          
+      });
+
+  //     $(document).ready(function () {
+  //       $('#album').DataTable({
+  //          "processing": true,
+  //          "serverSide": true,
+  //          ajax: {
+  //              url: "/../../admin/home.html",
+  //              type: "GET"
+  //          }
+  //      });
+  //  });
+  </script>
+  </body>
+</html>
