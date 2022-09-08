@@ -101,17 +101,22 @@ from django.shortcuts import redirect,render
 from .forms import MovieForm
 from .models import Movie
 import pandas as pd
+from django.db.models import Q
+
 # Create your views here.
 
 def home(request):
     form = MovieForm()
+
     if request.method == "POST":
+        
         file = request.FILES.get('myfile')
         # excel_file = request.FILES["movie_data"]
         filename = fs.save(file.name,file) 
         file_url = settings.PROJECT_APPS + fs.url(filename) # project app url + filename
         file_name=filename.split(".")[-1]
-        if filename == 'xlsx':
+        if file_name == 'xlsx':
+            import pandas as pd
             df = pd.read_excel(file)
             print(df)
             wb = xlrd.open_workbook(file_url)
@@ -161,6 +166,29 @@ def home(request):
         
         
         messages.success(request, 'Upload file succesfuly')
-    movies = Movie.objects.all()
-        # return redirect('/')
-    return render(request, 'home.html',{'movies':movies})
+        movies =Movie.objects.all()
+        return render(request, 'index.html',{'movies':movies})
+
+    else:    
+        filter_params = None
+        search = request.GET.get('search')
+        if search:
+            filter_params = None
+            for key in search.split():
+                if key.strip():
+                    if not filter_params:
+                        filter_params= Q(name__icontains=key.strip()) | Q(actor__icontains=key.strip()) | Q(genres__icontains=key.strip())
+                        # multiple_q = Q(Q(name__icontains=q) | Q(actor__icontains=q))
+                        # filter_params = Q(name__icontains=key.strip())| Q(actor__icontains=key.strip())
+                        # filter_params = Q(name__icontains=key.strip())
+                        # filter_params = Q(actor__icontains=key.strip())
+                        # filter_params = Q(genres__icontains=key.strip())
+
+
+                    else:
+                        filter_params |= Q(name__icontains=key.strip())
+                        filter_params |= Q(actor__icontains=key.strip())
+
+
+        movies = Movie.objects.filter(filter_params) if filter_params else Movie.objects.all()
+    return render(request, 'index.html',{'movies':movies})

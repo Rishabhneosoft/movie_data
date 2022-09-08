@@ -15,20 +15,19 @@ urlpatterns = [
 
 
     path('excelapi/', views.SendExelView.as_view ()),
-    path('', views.home ,name='movie_data')
+    path('', views.home ,name='movie_data'),
+    
 #     # path('upload/', views.MovieView.as_view ())
 # ]
+    # path('movie/', include('movie_app.urls'))
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 # from django.contrib import admin
-# from django.urls import path
-# from django.conf import settings
-# from django.conf.urls.static import static
-# from movie_app import views
+# from django.urls import path, include
+
 # urlpatterns = [
 #     path('admin/', admin.site.urls),
-#     path('', views.home ,name='movie_data')
-# ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
+#     path('', include('movie_app.urls')),
+# ]

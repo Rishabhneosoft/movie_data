@@ -1,16 +1,108 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
-    <title>Document</title>
-</head>
-<body>
-    {% if something %}
+  <head>
+    <meta charset="utf-8">
+    <title>Rolling Stone Top 500 albums of all time</title>
+    <style>
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+        
+        td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+        }
+        
+        tr:nth-child(even) {
+          background-color: #dddddd;
+        }
+        </style>
+        </head>
+    <!-- <meta name="description" content="Rolling Stone magazine's 2012 list of 500 greatest albums of all time with genres."> -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.css">
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css">
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css"> -->
+<!-- 
+    <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>  -->
+  </head>
+  <body>
 
-    {% else %}
+    
 
-    {% endif %}
-</body>
+
+    <!-- <script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.0.7/daterangepicker.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script> -->
+    <!-- <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script> --> 
+   <div class="container">
+    <div class="py-5 text-center bg-secondary text-white">
+     <h1 class="mb-3">Upload File</h1>
+        <form method='POST' action="/" enctype="multipart/form-data">
+            {% for msg in messages %}
+                {{msg}}
+            {% endfor %}
+            {% csrf_token %}
+            <input type="file" class="file_type" name="myfile" > 
+            <input type="submit" class="btn btn-primary" value="submit">
+        </form>
+    </div>
+   </div>
+
+   <form action="{% url 'movie_data' %}" method="get">
+    <div class="col-sm-3">
+        <span class="input-group-text" id="basic-addon2"><span class="fas fa-search"></span></span>
+        <input type="text" name="search" class="form-control" id="search" placeholder="Search Only Name Actor And Genres">
+    </div>
+    </form>
+   <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <table id='table_id' class="tables table-striped table-bordered album" style="width:100%" data-server-side="true">
+          <thead>
+            <tr>
+              <th data-data="name">Name</th>
+              <th data-data="actor">Actor</th>
+              <th data-data="release_date">Release date</th>
+              <th data-data="poster_image">Poster picture</th>
+              <th data-data="genres">genres</th>
+
+            </tr>
+          </thead>
+          <tbody>
+`            
+            {% for movie in movies %} 
+            <tr>
+                <td>{{ movie.name }}</td>
+            
+                <td>{{ movie.actor }}</td>
+          
+                <td>{{ movie.release_date }}</td>
+            
+                <td>{{ movie.poster_image }}</td>
+            
+                <td>{{ movie.genres }}</td>
+            <tr>
+            {% endfor %}
+        </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+    $('#search').click(function() {
+        location.reload();
+    });
+</script>
+
+
+  </body>
 </html>
